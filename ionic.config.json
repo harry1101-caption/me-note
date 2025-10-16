@@ -1,0 +1,8 @@
+{
+  "name": "me-note",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "fc8d8974"
+}
