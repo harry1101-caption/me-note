@@ -1,2 +1,88 @@
-/* For information on how to create your own theme, please see:
-http://ionicframework.com/docs/theming/ */
+/* === Base Font === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+  /* === Primary Color Palette === */
+  --ion-color-primary: #434EF5;
+  --ion-color-primary-rgb: 67, 78, 245;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3b44d8;
+  --ion-color-primary-tint: #5660f6;
+
+  --ion-color-primary-50: #ECEDFE;
+  --ion-color-primary-100: #D9DCFD;
+  --ion-color-primary-200: #B4B8FB;
+  --ion-color-primary-300: #8E95F9;
+  --ion-color-primary-400: #6971F7;
+  --ion-color-primary-500: #434EF5;
+  --ion-color-primary-600: #363EC4;
+  --ion-color-primary-700: #282F93;
+  --ion-color-primary-800: #1B1F62;
+  --ion-color-primary-900: #0D1031;
+
+  /* === Gray Palette (Tailwind Style) === */
+  --ion-color-gray-50:  #F9FAFB;
+  --ion-color-gray-100: #F3F4F6;
+  --ion-color-gray-200: #E5E7EB;
+  --ion-color-gray-300: #D1D5DB;
+  --ion-color-gray-400: #9CA3AF;
+  --ion-color-gray-500: #6B7280;
+  --ion-color-gray-600: #4B5563;
+  --ion-color-gray-700: #374151;
+  --ion-color-gray-800: #1F2937;
+  --ion-color-gray-900: #111827;
+
+  /* === Green Palette (Tailwind Style) === */
+  --ion-color-green-50:  #F0FDF4;
+  --ion-color-green-100: #DCFCE7;
+  --ion-color-green-200: #BBF7D0;
+  --ion-color-green-300: #86EFAC;
+  --ion-color-green-400: #4ADE80;
+  --ion-color-green-500: #22C55E;
+  --ion-color-green-600: #16A34A;
+  --ion-color-green-700: #15803D;
+  --ion-color-green-800: #166534;
+  --ion-color-green-900: #14532D;
+
+  /* === Tabs Component Variables === */
+  --tabs-bg: rgba(0, 0, 0, 0.04);
+  --tabs-text-color: rgba(0, 0, 0, 0.6);
+  --tabs-active-text-color: rgba(0, 0, 0, 0.9);
+  --tabs-indicator-bg: rgba(255, 255, 255, 0.95);
+  --tabs-badge-bg: rgba(255, 59, 48, 1);
+  --tabs-active-badge-bg: rgba(255, 255, 255, 0.9);
+  --tabs-active-badge-color: rgba(255, 59, 48, 1);
+  --tabs-focus-color: rgba(67, 78, 245, 0.5);
+}
+
+/* === Primary Color Utility Classes === */
+.ion-color-primary-50, .ion-color-primary-100, .ion-color-primary-200, .ion-color-primary-300 {
+  --ion-color-contrast: #000;
+}
+.ion-color-primary-400, .ion-color-primary-500, .ion-color-primary-600, 
+.ion-color-primary-700, .ion-color-primary-800, .ion-color-primary-900 {
+  --ion-color-contrast: #fff;
+}
+
+/* === Gray Utility Classes === */
+.ion-color-gray-50, .ion-color-gray-100, .ion-color-gray-200, .ion-color-gray-300 {
+  --ion-color-base: var(--ion-color-gray-50);
+  --ion-color-contrast: #000;
+}
+.ion-color-gray-400, .ion-color-gray-500, .ion-color-gray-600, 
+.ion-color-gray-700, .ion-color-gray-800, .ion-color-gray-900 {
+  --ion-color-contrast: #fff;
+}
+
+/* === Green Utility Classes === */
+.ion-color-green-50, .ion-color-green-100, .ion-color-green-200, .ion-color-green-300 {
+  --ion-color-base: var(--ion-color-green-50);
+  --ion-color-contrast: #000;
+}
+.ion-color-green-400, .ion-color-green-500, .ion-color-green-600, 
+.ion-color-green-700, .ion-color-green-800, .ion-color-green-900 {
+  --ion-color-contrast: #fff;
+}

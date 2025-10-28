@@ -1,0 +1,239 @@
+/* Tabs Container */
+.tabs {
+  display: inline-flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tabs-full-width {
+  width: 100%;
+}
+
+.tabs-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Tabs Container */
+.tabs-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--tabs-bg, rgba(0, 0, 0, 0.04));
+  padding: 4px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+/* Tab Button */
+.tab {
+  position: relative;
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  white-space: nowrap;
+  z-index: 1;
+  outline: none;
+}
+
+.tab:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.tab:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Tab Content */
+.tab-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--tabs-text-color, rgba(0, 0, 0, 0.6));
+  transition: color 0.2s ease;
+}
+
+.tab-active .tab-content {
+  color: var(--tabs-active-text-color, rgba(0, 0, 0, 0.9));
+  font-weight: 600;
+}
+
+/* Tab Icon */
+.tab-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+/* Tab Label */
+.tab-label {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Tab Badge */
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  background: var(--tabs-badge-bg, rgba(255, 59, 48, 1));
+  color: white;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tab-active .tab-badge {
+  background: var(--tabs-active-badge-bg, rgba(255, 255, 255, 0.9));
+  color: var(--tabs-active-badge-color, rgba(255, 59, 48, 1));
+}
+
+/* Active Indicator (Pill variant only) */
+.tabs-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  background: var(--tabs-indicator-bg, rgba(255, 255, 255, 0.95));
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 1;
+  width: 0;
+}
+
+/* Sizes */
+.tabs-size-small .tab {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.tabs-size-small .tab-label {
+  font-size: 13px;
+}
+
+.tabs-size-medium .tab {
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+.tabs-size-large .tab {
+  padding: 12px 20px;
+  font-size: 15px;
+}
+
+.tabs-size-large .tab-label {
+  font-size: 15px;
+}
+
+/* Variants */
+.tabs-variant-compact .tabs-container {
+  padding: 2px;
+  gap: 2px;
+}
+
+.tabs-variant-compact .tab {
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.tabs-variant-compact .tabs-indicator {
+  top: 2px;
+  left: 2px;
+  height: calc(100% - 4px);
+  border-radius: 6px;
+}
+
+/* Default variant - no background */
+.tabs-variant-default .tabs-container {
+  background: transparent;
+  padding: 0;
+  gap: 8px;
+}
+
+.tabs-variant-default .tab {
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.tabs-variant-default .tabs-indicator {
+  display: none;
+}
+
+.tabs-variant-default .tab-active .tab-content {
+  color: var(--tabs-active-text-color, var(--ion-color-primary, #434EF5));
+}
+
+.tabs-variant-default .tab {
+  background: transparent;
+}
+
+.tabs-variant-default .tab:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .tabs-container {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  
+  .tab-content {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .tab-active .tab-content {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .tab:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .tabs-indicator {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .tabs-variant-default .tab:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Smooth transitions on tab change */
+.tab * {
+  transition: all 0.2s ease;
+}
+
+/* Accessibility improvements */
+.tab:focus-visible {
+  outline: 2px solid var(--tabs-focus-color, rgba(67, 78, 245, 0.5));
+  outline-offset: 2px;
+}
+
+/* iOS-specific styling */
+@supports (-webkit-touch-callout: none) {
+  .tab {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

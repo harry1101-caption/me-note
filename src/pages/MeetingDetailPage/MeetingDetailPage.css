@@ -1,0 +1,484 @@
+.meeting-detail-content {
+  --background: var(--ion-color-gray-50);
+}
+
+.meeting-detail-container {
+  padding: 16px;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Media Player */
+.media-player {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid var(--ion-color-gray-200);
+  width: 100%;
+}
+
+.media-player-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Progress Section */
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 0;
+}
+
+.progress-bar-container {
+  width: 100%;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.time-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.time-label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.time-label.elapsed {
+  text-align: left;
+}
+
+.time-label.duration {
+  text-align: right;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #333;
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+.progress-scrubber {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.1s ease;
+}
+
+/* Control Buttons */
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+}
+
+.control-buttons .control-btn {
+  margin: 0;
+}
+
+/* Grouped control buttons (middle 3 buttons) */
+.control-buttons > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+}
+
+.control-buttons > div .control-btn {
+  margin: 0;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.control-btn:not(.sound-wave):not(.delete):active {
+  transform: scale(0.95);
+}
+
+.sound-wave {
+  color: var(--ion-color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn.rewind,
+.control-btn.fast-forward {
+  color: #333;
+  position: relative;
+}
+
+.control-btn.play-pause {
+  width: 40px;
+  height: 40px;
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.control-btn.play-pause.playing {
+  background: #333;
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.control-btn:disabled:active {
+  transform: none;
+}
+
+.delete {
+  color: var(--ion-color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+/* Tabs */
+.meeting-tabs-container {
+  margin: 16px 0;
+  padding: 0 4px;
+}
+
+.meeting-tabs-container .tabs {
+  width: 100%;
+}
+
+.content-section {
+  margin-bottom: 16px;
+}
+
+.content-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+}
+
+.content-section p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--ion-color-dark);
+}
+
+/* Markdown Content Styling */
+.markdown-content {
+  color: var(--ion-color-dark);
+  line-height: 1.6;
+}
+
+.markdown-content h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 16px 0 12px 0;
+  color: var(--ion-color-dark);
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 14px 0 10px 0;
+  color: var(--ion-color-dark);
+}
+
+.markdown-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 12px 0 8px 0;
+  color: var(--ion-color-dark);
+}
+
+.markdown-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 10px 0 8px 0;
+  color: var(--ion-color-dark);
+}
+
+.markdown-content p {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0 0 12px 0;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.markdown-content code {
+  background-color: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background-color: #f4f4f4;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid var(--ion-color-primary);
+  padding-left: 16px;
+  margin: 12px 0;
+  color: var(--ion-color-medium);
+  font-style: italic;
+}
+
+.markdown-content a {
+  color: var(--ion-color-primary);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--ion-color-light);
+  margin: 16px 0;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+/* Summary Content */
+.summary-content ion-card {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.summary-content ion-list {
+  padding: 0;
+}
+
+.summary-content ion-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+}
+
+.summary-content ion-item:last-child {
+  margin-bottom: 0;
+}
+
+.summary-content ion-item ion-label h4 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.summary-content ion-item ion-note {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Transcription Content */
+.transcription-content ion-card {
+  border-radius: 8px;
+}
+
+.transcription-list {
+  margin-top: 16px;
+}
+
+.transcription-entry {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+}
+
+.transcription-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.transcription-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.transcription-header ion-chip {
+  font-size: 0.75rem;
+  height: 24px;
+}
+
+.transcription-header ion-note {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+
+.transcription-entry p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--ion-color-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .recording-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .audio-controls {
+    justify-content: center;
+    margin-top: 12px;
+  }
+  
+  .recording-meta {
+    justify-content: center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .meeting-detail-content {
+    --background: var(--ion-color-dark);
+  }
+  
+  .recording-item {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .recording-info h2 {
+    color: var(--ion-color-light);
+  }
+  
+  .content-section h3 {
+    color: var(--ion-color-light);
+  }
+  
+  .content-section p {
+    color: var(--ion-color-light);
+  }
+  
+  .transcription-entry p {
+    color: var(--ion-color-light);
+  }
+}
+
+/* Enhanced Transcription Styles */
+.transcription-content {
+  padding: 0;
+}
+
+.transcription-text {
+  margin-top: 16px;
+  padding: 20px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transcription-text p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--ion-color-dark);
+  font-size: 15px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.no-transcription {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.no-transcription p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Dark mode transcription styles */
+@media (prefers-color-scheme: dark) {
+  .transcription-text {
+    background: var(--ion-color-dark);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .transcription-text p {
+    color: var(--ion-color-light);
+  }
+}

@@ -1,0 +1,203 @@
+/* Sheet Modal Overlay */
+.sheet-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sheet-modal-overlay.closing {
+  animation: fadeOut 0.3s ease-in;
+}
+
+/* Sheet Modal Container */
+.sheet-modal {
+  background: white;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.sheet-modal.closing {
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Drag Handle */
+.sheet-drag-handle {
+  width: 40px;
+  height: 4px;
+  background: #ccc;
+  border-radius: 2px;
+  margin: 8px auto;
+  cursor: grab;
+  transition: background-color 0.2s ease;
+}
+
+.sheet-drag-handle:hover {
+  background: #999;
+}
+
+.sheet-drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Header */
+.sheet-header {
+  padding: 16px 20px 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: white;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.sheet-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.sheet-header-left:only-child {
+  align-items: center;
+}
+
+.sheet-header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.sheet-close-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+
+/* Content */
+.sheet-content {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  background: white;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer */
+.sheet-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+  background: white;
+  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+/* CTA Buttons - Using Button component */
+.sheet-footer .button {
+  min-width: 80px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+/* Focus and accessibility */
+.sheet-modal:focus {
+  outline: none;
+}
+
+/* Smooth transitions for interactive elements */
+.sheet-modal * {
+  transition: all 0.2s ease;
+}
+
+/* Custom scrollbar for content */
+.sheet-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sheet-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sheet-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
+.sheet-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}

@@ -1,0 +1,179 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Size variants */
+.size-small {
+  font-size: 0.875rem;
+  gap: 0.25rem;
+}
+
+.size-medium {
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.size-large {
+  font-size: 1.25rem;
+  gap: 0.75rem;
+}
+
+.size-xlarge {
+  font-size: 1.5rem;
+  gap: 1rem;
+}
+
+.custom-size {
+  /* Custom size will be applied via inline styles */
+}
+
+/* Prefix and suffix styling */
+.prefix,
+.suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prefix {
+  margin-right: 0.25rem;
+}
+
+.suffix {
+  margin-left: 0.25rem;
+}
+
+/* Content styling */
+.content {
+  flex: 1;
+}
+
+/* Element type specific styles */
+.button h1,
+.button h2,
+.button h3,
+.button h4,
+.button h5,
+.button h6 {
+  margin: 0;
+  font-weight: inherit;
+}
+
+.button p {
+  margin: 0;
+}
+
+
+/* Button-specific styling */
+.button[type="button"],
+button.button {
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 18px;
+  min-height: 50px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+/* Button variants */
+.variant-primary {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.variant-secondary {
+  background: transparent;
+  color: var(--ion-color-primary);
+  border: 2px solid var(--ion-color-primary);
+}
+
+.variant-outline {
+  background: transparent;
+  color: var(--ion-color-primary);
+  border: 2px solid var(--ion-color-primary);
+}
+
+.variant-ghost {
+  background: transparent;
+  color: var(--ion-color-primary);
+}
+
+/* Button hover states */
+.variant-primary:hover {
+  background: var(--ion-color-primary-shade);
+}
+
+.variant-secondary:hover {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.variant-outline:hover {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.variant-ghost:hover {
+  background: var(--ion-color-primary-50);
+}
+
+/* Button active states */
+.button[type="button"]:active,
+button.button:active {
+  transform: scale(0.98);
+}
+
+.variant-primary:active {
+  background: var(--ion-color-primary-tint);
+}
+
+.variant-secondary:active {
+  background: var(--ion-color-primary-shade);
+  color: var(--ion-color-primary-contrast);
+}
+
+.variant-outline:active {
+  background: var(--ion-color-primary-shade);
+  color: var(--ion-color-primary-contrast);
+}
+
+.variant-ghost:active {
+  background: var(--ion-color-primary-100);
+}
+
+/* Button disabled state */
+.button[type="button"]:disabled,
+button.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Animation for interactive elements */
+.button[onclick] {
+  transition: transform 0.1s ease-in-out;
+}
+
+.button[onclick]:active {
+  transform: scale(0.98);
+}
