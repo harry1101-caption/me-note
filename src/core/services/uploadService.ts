@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-const API_BASE_URL = 'https://meonote-api.clen.dev/webhook';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://meonote-api.clen.dev/webhook';
 const TOKEN_KEY = 'anonymous-token';
 
 // Get anonymous token from localStorage
