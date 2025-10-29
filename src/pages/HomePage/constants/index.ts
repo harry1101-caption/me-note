@@ -8,10 +8,10 @@ export const SAMPLE_MEETINGS: NoteResponse[] = [
     _id: 'sample_001',
     title: 'Product Launch Planning Meeting',
     content: 'Discussed the upcoming product launch strategy for Q2 2024. Reviewed marketing campaigns and timelines.',
-    transcription: [
+    transcription: JSON.stringify([
       { role: 'user', text: 'Good morning everyone. Let\'s start by reviewing our product launch timeline.', timestamp: 0 },
       { role: 'assistant', text: 'The team reviewed the timeline for the Q2 product launch and discussed key milestones.', timestamp: 120 }
-    ],
+    ]),
     meetingTime: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
     duration: 3600, // 1 hour
     recordings: [],
@@ -34,10 +34,10 @@ export const SAMPLE_MEETINGS: NoteResponse[] = [
     _id: 'sample_002',
     title: 'Weekly Team Standup',
     content: 'Team updates on current projects and blockers. Discussed sprint planning and resource allocation.',
-    transcription: [
+    transcription: JSON.stringify([
       { role: 'user', text: 'Let\'s go around and share what everyone is working on.', timestamp: 0 },
       { role: 'assistant', text: 'Team members shared their progress and discussed upcoming tasks.', timestamp: 180 }
-    ],
+    ]),
     meetingTime: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Yesterday
     duration: 1800, // 30 minutes
     recordings: [],
@@ -60,10 +60,10 @@ export const SAMPLE_MEETINGS: NoteResponse[] = [
     _id: 'sample_003',
     title: 'Quarterly Business Review',
     content: 'Reviewed Q1 performance metrics and set goals for Q2. Discussed budget allocations and team expansion plans.',
-    transcription: [
+    transcription: JSON.stringify([
       { role: 'user', text: 'Looking at our Q1 results, we exceeded targets by 15%.', timestamp: 0 },
       { role: 'assistant', text: 'The team discussed Q1 achievements and planned Q2 objectives.', timestamp: 240 }
-    ],
+    ]),
     meetingTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
     duration: 5400, // 1.5 hours
     recordings: [],
@@ -86,10 +86,10 @@ export const SAMPLE_MEETINGS: NoteResponse[] = [
     _id: 'sample_004',
     title: 'Client Feedback Session',
     content: 'Gathered feedback from major clients on our platform. Discussed feature requests and pain points.',
-    transcription: [
+    transcription: JSON.stringify([
       { role: 'user', text: 'Thank you for joining us today. We\'d love to hear your thoughts on the new features.', timestamp: 0 },
       { role: 'assistant', text: 'Clients provided valuable feedback on platform improvements.', timestamp: 300 }
-    ],
+    ]),
     meetingTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     duration: 2700, // 45 minutes
     recordings: [],
@@ -112,10 +112,10 @@ export const SAMPLE_MEETINGS: NoteResponse[] = [
     _id: 'sample_005',
     title: 'Technical Architecture Review',
     content: 'Reviewed system architecture and discussed scalability improvements. Planned infrastructure upgrades.',
-    transcription: [
+    transcription: JSON.stringify([
       { role: 'user', text: 'Let\'s start by examining our current system architecture.', timestamp: 0 },
       { role: 'assistant', text: 'The team discussed technical improvements and scalability options.', timestamp: 180 }
-    ],
+    ]),
     meetingTime: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
     duration: 3600, // 1 hour
     recordings: [],

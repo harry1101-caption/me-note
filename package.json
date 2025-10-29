@@ -39,9 +39,7 @@
     "react-markdown": "^10.1.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
-    "react-voice-visualizer": "^2.0.8",
     "recordrtc": "^5.6.2",
-    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.3.1",
     "uuid": "^13.0.0"
   },
@@ -55,7 +53,6 @@
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "@types/recordrtc": "^5.6.15",
-    "@types/socket.io-client": "^1.4.36",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-react": "^4.0.1",

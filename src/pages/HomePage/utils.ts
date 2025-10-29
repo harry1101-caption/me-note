@@ -144,7 +144,7 @@ export const createPendingMeeting = (tempId: string): MeetingDisplayData => {
       title: 'Đang xử lý...',
       meetingTime: now.toISOString(),
       duration: 0,
-      transcription: [],
+      transcription: '',
       recordings: [],
       isDeleted: false,
       createdBy: '',

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import './FloatingActionButton.css';
 
 // Simple class name utility function
@@ -6,12 +7,13 @@ const cn = (...classes: (string | undefined | null | false)[]): string => {
   return classes.filter(Boolean).join(' ');
 };
 
-interface FloatingActionButtonProps {
+export interface FloatingActionButtonProps {
   icon: React.ReactNode;
   onClick: () => void;
   className?: string;
   vertical?: 'bottom' | 'center' | 'top';
   horizontal?: 'center' | 'end' | 'start';
+  enableHapticFeedback?: boolean;
 }
 
 const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
@@ -19,8 +21,26 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   onClick,
   className = '',
   vertical = 'bottom',
-  horizontal = 'center'
+  horizontal = 'center',
+  enableHapticFeedback = true
 }) => {
+  // Haptic feedback function
+  const triggerHapticFeedback = async () => {
+    try {
+      await Haptics.impact({ style: ImpactStyle.Medium });
+    } catch (error) {
+      // Haptic feedback is not available on this device/platform
+      console.log('Haptic feedback not available:', error);
+    }
+  };
+
+  // Enhanced click handler with haptic feedback
+  const handleClick = async () => {
+    if (enableHapticFeedback) {
+      await triggerHapticFeedback();
+    }
+    onClick();
+  };
   // Convert vertical and horizontal props to CSS classes
   const getVerticalClass = () => {
     switch (vertical) {
@@ -45,7 +65,7 @@ const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
       <div className="relative">
         {/* Main button */}
         <button
-          onClick={onClick}
+          onClick={handleClick}
           className={cn(
             'h-12 w-12 rounded-full shadow-lg',
             'bg-primary-500 hover:bg-primary-500/90',

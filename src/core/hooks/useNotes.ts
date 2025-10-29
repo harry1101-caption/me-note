@@ -37,6 +37,7 @@ export interface Note {
     attendees: string[];
     actionItems: string[];
     notes: string;
+    decisions?: string[];
   };
   aiSummary?: {
     summary: {
@@ -75,6 +76,7 @@ interface UseNotesReturn {
   fetchNoteById: (id: string) => Promise<Note | null>;
   deleteNote: (id: string, title: string, summarizedContent: string) => Promise<void>;
   addNote: (note: Note) => void;
+  createNote: (noteData: Omit<Note, '_id' | 'createdBy' | 'updatedBy' | 'createdAt' | 'updatedAt' | 'isDeleted'>) => Promise<Note>;
 }
 
 export const useNotes = (): UseNotesReturn => {
@@ -201,6 +203,29 @@ export const useNotes = (): UseNotesReturn => {
     });
   }, []);
 
+  const createNote = useCallback(async (noteData: Omit<Note, '_id' | 'createdBy' | 'updatedBy' | 'createdAt' | 'updatedAt' | 'isDeleted'>): Promise<Note> => {
+    try {
+      const token = getAnonymousToken();
+      const newNote: Note = {
+        ...noteData,
+        _id: uuidv4(),
+        isDeleted: false,
+        createdBy: token,
+        updatedBy: token,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      
+      // Add to local state
+      addNote(newNote);
+      
+      return newNote;
+    } catch (err) {
+      console.error('Error creating note:', err);
+      throw err;
+    }
+  }, [addNote]);
+
   return {
     data,
     loading,
@@ -210,6 +235,7 @@ export const useNotes = (): UseNotesReturn => {
     fetchNoteById,
     deleteNote,
     addNote,
+    createNote,
   };
 };
 

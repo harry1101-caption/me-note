@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Square } from 'lucide-react';
 import RecordRTC from 'recordrtc';
 import './RecordingInterface.css';
-import VoiceVisualizer from '../voice-visualizer';
 
 interface RecordingInterfaceProps {
   isRecording?: boolean;
@@ -16,7 +15,6 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({
   onRecordingComplete,
 }) => {
   const [recordingTime, setRecordingTime] = useState(0);
-  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -36,7 +34,6 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({
         });
 
         mediaStreamRef.current = stream;
-        setStream(stream); // 👈 Pass this to VoiceVisualizer
 
         recorderRef.current = new RecordRTC(stream, {
           type: 'audio',
@@ -106,9 +103,6 @@ const RecordingInterface: React.FC<RecordingInterfaceProps> = ({
               <span className="status-text">Recording</span>
             </div>
       <div className="recording-content">
-        {/* 🔊 Voice Visualizer */}
-        {isRecording && <VoiceVisualizer stream={stream} />}
-
         <div className="recording-time-wrapper">
           <div className="recording-time">{formatTime(recordingTime)}</div>
           <button className="stop-button" onClick={handleStop} aria-label="Stop recording">
