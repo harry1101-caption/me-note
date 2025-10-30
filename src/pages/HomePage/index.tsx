@@ -20,6 +20,7 @@ import {
   Mic,
   Search
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { FloatingActionButton, SheetModal, Input } from '../../components';
 import { MeetingActionsMenu, SettingsContent } from './components';
 import { useNotes, uploadRecording, type Note } from '../../core';
@@ -31,6 +32,7 @@ import RecordingInterface from './components/recording-interface';
 const HomePage: React.FC = () => {
   const history = useHistory();
   const [present] = useIonToast();
+  const { t } = useTranslation();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isRecordingSheetOpen, setIsRecordingSheetOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,6 +40,9 @@ const HomePage: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [pendingMeetings, setPendingMeetings] = useState<MeetingDisplayData[]>([]);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+  const [editingMeetingId, setEditingMeetingId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState('');
+  const [isUpdatingTitle, setIsUpdatingTitle] = useState(false);
   const isInitialMount = useRef(true);
 
   // Use the notes API hook
@@ -49,6 +54,7 @@ const HomePage: React.FC = () => {
     searchNotes,
     deleteNote,
     addNote,
+    updateNoteTitle,
   } = useNotes();
 
   const handleNewRecording = () => {
@@ -93,7 +99,7 @@ const HomePage: React.FC = () => {
           
           // Show success message
           present({
-            message: 'Tải lên thành công!',
+            message: t('home.uploadSuccess'),
             duration: 1000,
             position: 'bottom',
             color: 'success',
@@ -108,7 +114,7 @@ const HomePage: React.FC = () => {
         // Remove the pending meeting on failure
         setPendingMeetings(prev => prev.filter(m => m.id !== tempId));
         present({
-          message: `Lỗi khi tải lên: ${result.message}`,
+          message: `${t('home.uploadError')}: ${result.message}`,
           duration: 1000,
           position: 'bottom',
           color: 'danger',
@@ -119,7 +125,7 @@ const HomePage: React.FC = () => {
       // Remove the pending meeting on error
       setPendingMeetings(prev => prev.filter(m => m.id !== tempId));
       present({
-        message: 'Đã xảy ra lỗi khi tải lên ghi âm',
+        message: t('home.uploadErrorGeneral'),
         duration: 1000,
         position: 'bottom',
         color: 'danger',
@@ -127,7 +133,7 @@ const HomePage: React.FC = () => {
     } finally {
       setIsUploading(false);
     }
-  }, [present, addNote]);
+  }, [present, addNote, t]);
 
   const handleSettingsClick = () => {
     console.log('Settings button clicked!');
@@ -181,8 +187,63 @@ const HomePage: React.FC = () => {
   };
 
   const handleRename = (meetingId: string) => {
-    console.log('Rename meeting:', meetingId);
-    // TODO: Implement rename functionality
+    // Find the meeting to get its current title
+    const meeting = meetings.find(m => m.id === meetingId);
+    if (!meeting) return;
+    
+    setEditingMeetingId(meetingId);
+    setEditingTitle(meeting.title);
+  };
+
+  const handleTitleClick = (meetingId: string, currentTitle: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent navigation to detail page
+    setEditingMeetingId(meetingId);
+    setEditingTitle(currentTitle);
+  };
+
+  const handleTitleSave = async () => {
+    if (!editingMeetingId || !editingTitle.trim()) {
+      handleTitleCancel();
+      return;
+    }
+    
+    // If title hasn't changed, just cancel
+    const meeting = meetings.find(m => m.id === editingMeetingId);
+    if (meeting && meeting.title === editingTitle.trim()) {
+      handleTitleCancel();
+      return;
+    }
+    
+    setIsUpdatingTitle(true);
+    
+    try {
+      await updateNoteTitle(editingMeetingId, editingTitle.trim());
+      
+      present({
+        message: t('home.renameSuccess'),
+        duration: 1500,
+        position: 'bottom',
+        color: 'success',
+      });
+      
+      handleTitleCancel();
+    } catch (error) {
+      console.error('Error updating title:', error);
+      present({
+        message: t('home.renameError'),
+        duration: 2000,
+        position: 'bottom',
+        color: 'danger',
+      });
+      handleTitleCancel();
+    } finally {
+      setIsUpdatingTitle(false);
+    }
+  };
+
+  const handleTitleCancel = () => {
+    setEditingMeetingId(null);
+    setEditingTitle('');
   };
 
   const handleDelete = async (meetingId: string) => {
@@ -288,26 +349,26 @@ const HomePage: React.FC = () => {
       monthAgo.setMonth(monthAgo.getMonth() - 1);
 
       const groups: Record<string, MeetingDisplayData[]> = {
-        'Today': [],
-        'Yesterday': [],
-        'Last week': [],
-        'Last month': [],
-        'Older': [],
+        [t('home.timeGroups.today')]: [],
+        [t('home.timeGroups.yesterday')]: [],
+        [t('home.timeGroups.lastWeek')]: [],
+        [t('home.timeGroups.lastMonth')]: [],
+        [t('home.timeGroups.older')]: [],
       };
 
       meetingsList.forEach((meeting: MeetingDisplayData) => {
         const meetingDate = new Date(meeting.note.createdAt);
         
         if (meetingDate >= today) {
-          groups['Today'].push(meeting);
+          groups[t('home.timeGroups.today')].push(meeting);
         } else if (meetingDate >= yesterday) {
-          groups['Yesterday'].push(meeting);
+          groups[t('home.timeGroups.yesterday')].push(meeting);
         } else if (meetingDate >= weekAgo) {
-          groups['Last week'].push(meeting);
+          groups[t('home.timeGroups.lastWeek')].push(meeting);
         } else if (meetingDate >= monthAgo) {
-          groups['Last month'].push(meeting);
+          groups[t('home.timeGroups.lastMonth')].push(meeting);
         } else {
-          groups['Older'].push(meeting);
+          groups[t('home.timeGroups.older')].push(meeting);
         }
       });
 
@@ -316,7 +377,7 @@ const HomePage: React.FC = () => {
     };
 
     return groupMeetingsByTime(meetings);
-  }, [meetings]);
+  }, [meetings, t]);
 
   return (
     <IonPage>
@@ -348,14 +409,14 @@ const HomePage: React.FC = () => {
           {/* Page Title */}
           <div className="page-title-section">
             <IonText>
-              <h1 className="page-title">Trang chủ</h1>
+              <h1 className="page-title">{t('home.title')}</h1>
             </IonText>
           </div>
 
           {/* Search Bar */}
           <div className="search-section">
             <Input 
-              placeholder="Tiêu đề, Ghi chú"
+              placeholder={t('home.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               prefixIcon={<Search size={20} />}
@@ -377,13 +438,13 @@ const HomePage: React.FC = () => {
               color: 'var(--ion-color-danger)'
             }}>
               <IonText color="danger">
-                <p>Lỗi khi tải dữ liệu: {error}</p>
+                <p>{t('home.loadingError')}: {error}</p>
                 <IonButton 
                   fill="outline" 
                   size="small" 
                   onClick={() => fetchNotes()}
                 >
-                  Thử lại
+                  {t('common.retry')}
                 </IonButton>
               </IonText>
             </div>
@@ -401,7 +462,7 @@ const HomePage: React.FC = () => {
                 }}>
                   <IonSpinner name="crescent" />
                   <IonText color="medium" style={{ marginLeft: '10px' }}>
-                    Đang tải...
+                    {t('common.loading')}
                   </IonText>
                 </div>
               ) : meetings.length > 0 ? (
@@ -410,7 +471,7 @@ const HomePage: React.FC = () => {
                   {searchQuery && (
                     <div className="section-title" style={{ marginBottom: '12px' }}>
                       <IonText color="medium">
-                        Kết quả tìm kiếm ({meetings.length})
+                        {t('home.searchResults')} ({meetings.length})
                       </IonText>
                     </div>
                   )}
@@ -443,7 +504,41 @@ const HomePage: React.FC = () => {
                         >
                           <div className="meeting-content">
                             <div className="meeting-title">
-                              <IonText>{truncateText(meeting.title, 50)}</IonText>
+                              {editingMeetingId === meeting.id ? (
+                                <input
+                                  type="text"
+                                  value={editingTitle}
+                                  onChange={(e) => setEditingTitle(e.target.value)}
+                                  onBlur={handleTitleSave}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      handleTitleSave();
+                                    } else if (e.key === 'Escape') {
+                                      handleTitleCancel();
+                                    }
+                                  }}
+                                  autoFocus
+                                  disabled={isUpdatingTitle}
+                                  style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    padding: '0',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    width: '100%',
+                                    outline: 'none',
+                                    color: '#000',
+                                    fontFamily: 'inherit',
+                                  }}
+                                />
+                              ) : (
+                                <IonText 
+                                  onClick={(e) => handleTitleClick(meeting.id, meeting.title, e)}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  {truncateText(meeting.title, 50)}
+                                </IonText>
+                              )}
                             </div>
                             <div className="meeting-details">
                               <Calendar size={14} className="detail-icon" />
@@ -509,7 +604,41 @@ const HomePage: React.FC = () => {
                             >
                               <div className="meeting-content">
                                 <div className="meeting-title">
-                                  <IonText>{truncateText(meeting.title, 50)}</IonText>
+                                  {editingMeetingId === meeting.id ? (
+                                    <input
+                                      type="text"
+                                      value={editingTitle}
+                                      onChange={(e) => setEditingTitle(e.target.value)}
+                                      onBlur={handleTitleSave}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                          handleTitleSave();
+                                        } else if (e.key === 'Escape') {
+                                          handleTitleCancel();
+                                        }
+                                      }}
+                                      autoFocus
+                                      disabled={isUpdatingTitle}
+                                      style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        padding: '0',
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        width: '100%',
+                                        outline: 'none',
+                                        color: '#000',
+                                        fontFamily: 'inherit',
+                                      }}
+                                    />
+                                  ) : (
+                                    <IonText 
+                                      onClick={(e) => handleTitleClick(meeting.id, meeting.title, e)}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      {truncateText(meeting.title, 50)}
+                                    </IonText>
+                                  )}
                                 </div>
                                 <div className="meeting-details">
                                   <Calendar size={14} className="detail-icon" />
@@ -552,12 +681,12 @@ const HomePage: React.FC = () => {
                   color: 'var(--ion-color-medium)'
                 }}>
                   <IonText color="medium">
-                    {searchQuery ? 'Không tìm thấy kết quả nào' : 'Chưa có cuộc họp nào'}
+                    {searchQuery ? t('home.noResults') : t('home.noMeetings')}
                   </IonText>
                   {!searchQuery && (
                     <div style={{ marginTop: '10px' }}>
                       <IonText color="medium">
-                        Nhấn nút ghi âm để tạo cuộc họp đầu tiên
+                        {t('home.noMeetingsHint')}
                       </IonText>
                     </div>
                   )}
@@ -591,7 +720,7 @@ const HomePage: React.FC = () => {
               }}>
                 <IonSpinner name="crescent" />
                 <IonText color="medium">
-                  Đang tải lên ghi âm...
+                  {t('home.uploading')}
                 </IonText>
               </div>
             ) : (
@@ -610,13 +739,14 @@ const HomePage: React.FC = () => {
         <SheetModal 
           isOpen={isSheetOpen}
           onClose={() => setIsSheetOpen(false)}
-          title='Settings'
+          title={t('settings.title')}
           content={
             <SettingsContent 
               userId="user_12345"
             />
           }
         />
+
       </IonContent>
     </IonPage>
   );

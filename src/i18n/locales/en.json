@@ -1,0 +1,75 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "share": "Share",
+    "search": "Search",
+    "back": "Back"
+  },
+  "languages": {
+    "en": "English",
+    "vi": "Vietnamese"
+  },
+  "settings": {
+    "title": "Settings",
+    "userId": "User ID",
+    "subscription": "Subscription",
+    "language": "Language",
+    "termsOfUse": "Terms of Use",
+    "freeTrial": "Free Trial"
+  },
+  "home": {
+    "title": "Home",
+    "searchPlaceholder": "Title, Notes",
+    "noMeetings": "No meetings yet",
+    "noMeetingsHint": "Tap the record button to create your first meeting",
+    "noResults": "No results found",
+    "searchResults": "Search results",
+    "uploading": "Uploading recording...",
+    "uploadSuccess": "Upload successful!",
+    "uploadError": "Error uploading",
+    "uploadErrorGeneral": "An error occurred while uploading the recording",
+    "renameSuccess": "Renamed successfully!",
+    "renameError": "Error renaming note",
+    "timeGroups": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "lastWeek": "Last week",
+      "lastMonth": "Last month",
+      "older": "Older"
+    },
+    "loadingError": "Error loading data"
+  },
+  "meetingDetail": {
+    "title": "Meeting Detail",
+    "notFound": "Meeting not found",
+    "notFoundMessage": "The meeting you are looking for does not exist or has been deleted.",
+    "backToHome": "Back to home",
+    "summary": "Summary",
+    "transcription": "Transcription",
+    "titlePlaceholder": "Enter meeting title",
+    "titleUpdateSuccess": "Title updated successfully",
+    "titleUpdateError": "Failed to update title",
+    "audioError": "Error playing audio",
+    "audioLoadError": "Unable to load or play audio",
+    "audioNotFound": "Audio file not found",
+    "audioPlayError": "Unable to play audio"
+  },
+  "recording": {
+    "start": "Start Recording",
+    "stop": "Stop Recording",
+    "pause": "Pause",
+    "resume": "Resume"
+  },
+  "actions": {
+    "share": "Share",
+    "rename": "Rename",
+    "delete": "Delete"
+  }
+}
+

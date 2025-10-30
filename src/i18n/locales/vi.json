@@ -1,0 +1,75 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "retry": "Thử lại",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "share": "Chia sẻ",
+    "search": "Tìm kiếm",
+    "back": "Quay lại"
+  },
+  "languages": {
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "userId": "ID Người dùng",
+    "subscription": "Gói đăng ký",
+    "language": "Ngôn ngữ",
+    "termsOfUse": "Điều khoản sử dụng",
+    "freeTrial": "Dùng thử miễn phí"
+  },
+  "home": {
+    "title": "Trang chủ",
+    "searchPlaceholder": "Tiêu đề, Ghi chú",
+    "noMeetings": "Chưa có cuộc họp nào",
+    "noMeetingsHint": "Nhấn nút ghi âm để tạo cuộc họp đầu tiên",
+    "noResults": "Không tìm thấy kết quả nào",
+    "searchResults": "Kết quả tìm kiếm",
+    "uploading": "Đang tải lên ghi âm...",
+    "uploadSuccess": "Tải lên thành công!",
+    "uploadError": "Lỗi khi tải lên",
+    "uploadErrorGeneral": "Đã xảy ra lỗi khi tải lên ghi âm",
+    "renameSuccess": "Đã đổi tên thành công!",
+    "renameError": "Lỗi khi đổi tên ghi chú",
+    "timeGroups": {
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "lastWeek": "Tuần trước",
+      "lastMonth": "Tháng trước",
+      "older": "Cũ hơn"
+    },
+    "loadingError": "Lỗi khi tải dữ liệu"
+  },
+  "meetingDetail": {
+    "title": "Chi tiết cuộc họp",
+    "notFound": "Không tìm thấy cuộc họp",
+    "notFoundMessage": "Cuộc họp bạn đang tìm không tồn tại hoặc đã bị xóa.",
+    "backToHome": "Quay lại trang chủ",
+    "summary": "Tóm tắt",
+    "transcription": "Bản ghi",
+    "titlePlaceholder": "Nhập tiêu đề cuộc họp",
+    "titleUpdateSuccess": "Đã cập nhật tiêu đề thành công",
+    "titleUpdateError": "Không thể cập nhật tiêu đề",
+    "audioError": "Lỗi khi phát âm thanh",
+    "audioLoadError": "Không thể tải hoặc phát âm thanh",
+    "audioNotFound": "Không tìm thấy file âm thanh",
+    "audioPlayError": "Không thể phát âm thanh"
+  },
+  "recording": {
+    "start": "Bắt đầu ghi âm",
+    "stop": "Dừng ghi âm",
+    "pause": "Tạm dừng",
+    "resume": "Tiếp tục"
+  },
+  "actions": {
+    "share": "Chia sẻ",
+    "rename": "Đổi tên",
+    "delete": "Xóa"
+  }
+}
+

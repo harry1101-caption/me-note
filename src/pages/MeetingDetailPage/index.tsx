@@ -15,12 +15,12 @@ import {
 import { 
   Play, 
   Pause, 
-  Share,
   RotateCcw,
   RotateCw,
-  
-  Edit3,
+  Trash2,
+  SquarePen,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useHistory } from 'react-router-dom';
 import { useNotes, Note } from '../../core';
 import { formatDuration } from '../HomePage/utils';
@@ -32,6 +32,7 @@ const MeetingDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const [present] = useIonToast();
+  const { t } = useTranslation();
   const { fetchNoteById, deleteNote } = useNotes();
   const [selectedTab, setSelectedTab] = useState<'summary' | 'transcription'>('summary');
   const [meeting, setMeeting] = useState<Note | null>(null);
@@ -44,6 +45,11 @@ const MeetingDetailPage: React.FC = () => {
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const [audioBlob, setAudioBlob] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  
+  // Edit title state
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingTitle, setEditingTitle] = useState('');
+  const [isUpdatingTitle, setIsUpdatingTitle] = useState(false);
 
   // Fetch meeting data by ID
   useEffect(() => {
@@ -99,7 +105,7 @@ const MeetingDetailPage: React.FC = () => {
     const handleError = (e: Event) => {
       console.error('Audio error:', e);
       present({
-        message: 'Lỗi khi phát âm thanh',
+        message: t('meetingDetail.audioError'),
         duration: 2000,
         position: 'bottom',
         color: 'danger',
@@ -148,7 +154,7 @@ const MeetingDetailPage: React.FC = () => {
       }).catch(err => {
         console.error('Error playing audio:', err);
         present({
-          message: 'Không thể phát âm thanh',
+          message: t('meetingDetail.audioPlayError'),
           duration: 2000,
           position: 'bottom',
           color: 'danger',
@@ -161,7 +167,7 @@ const MeetingDetailPage: React.FC = () => {
     const fileUuid = meeting?.recordingMetadata?.fileUuid;
     if (!fileUuid) {
       present({
-        message: 'Không tìm thấy file âm thanh',
+        message: t('meetingDetail.audioNotFound'),
         duration: 2000,
         position: 'bottom',
         color: 'danger',
@@ -204,7 +210,7 @@ const MeetingDetailPage: React.FC = () => {
     } catch (err) {
       console.error('Error fetching/playing audio:', err);
       present({
-        message: 'Không thể tải hoặc phát âm thanh',
+        message: t('meetingDetail.audioLoadError'),
         duration: 2000,
         position: 'bottom',
         color: 'danger',
@@ -233,55 +239,82 @@ const MeetingDetailPage: React.FC = () => {
         meeting.summarizedContent || meeting.content || ''
       );
       console.log('Meeting deleted successfully:', id);
+      // Navigate back immediately after successful deletion
       history.push('/home');
     } catch (err) {
       console.error('Failed to delete meeting:', err);
+      // Still navigate back even if there's an error
+      history.push('/home');
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const handleShare = async () => {
-    console.log('Share meeting:', id);
-    
-    if (!meeting) return;
-    
-    // Create the shareable URL
-    const shareUrl = `${window.location.origin}/meeting/${id}`;
-    const shareData = {
-      title: meeting.title || 'Meeting Note',
-      text: `Check out this meeting note: ${meeting.title}`,
-      url: shareUrl,
-    };
+  const handleEdit = () => {
+    setEditingTitle(meeting?.title || '');
+    setIsEditing(true);
+  };
 
+  const handleSaveTitle = async () => {
+    if (!editingTitle.trim() || !id || !meeting) return;
+    
+    // If title hasn't changed, just cancel
+    if (meeting.title === editingTitle.trim()) {
+      handleCancelEdit();
+      return;
+    }
+    
+    setIsUpdatingTitle(true);
     try {
-      // Check if the Web Share API is supported
-      if (navigator.share) {
-        await navigator.share(shareData);
-        console.log('Shared successfully');
-      } else {
-        // Fallback: Copy to clipboard
-        await navigator.clipboard.writeText(shareUrl);
-        present({
-          message: 'Link copied to clipboard!',
-          duration: 2000,
-          position: 'bottom',
-          color: 'success',
-        });
+      // Make direct API call instead of using useNotes updateNoteTitle
+      const token = localStorage.getItem('anonymous-token') || '';
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      
+      const response = await fetch(`${API_BASE_URL}/webhook/note?id=${id}`, {
+        method: 'PUT',
+        headers: {
+          'anonymous-token': token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: editingTitle.trim()
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update note title');
       }
+      
+      // Update local meeting state with new title
+      setMeeting(prev => prev ? { ...prev, title: editingTitle.trim() } : null);
+      
+      setIsEditing(false);
+      present({
+        message: t('meetingDetail.titleUpdateSuccess'),
+        duration: 2000,
+        position: 'bottom',
+        color: 'success',
+      });
     } catch (error) {
-      // Handle user cancellation or errors
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error('Error sharing:', error);
-        present({
-          message: 'Failed to share',
-          duration: 2000,
-          position: 'bottom',
-          color: 'danger',
-        });
-      }
+      console.error('Error updating title:', error);
+      present({
+        message: t('meetingDetail.titleUpdateError'),
+        duration: 2000,
+        position: 'bottom',
+        color: 'danger',
+      });
+      // Return to non-editing state on error
+      handleCancelEdit();
+    } finally {
+      setIsUpdatingTitle(false);
     }
   };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditingTitle('');
+  };
+
 
   const handleRewind = () => {
     if (audioRef.current) {
@@ -319,7 +352,7 @@ const MeetingDetailPage: React.FC = () => {
             <IonButtons slot="start">
               <IonBackButton defaultHref="/home" />
             </IonButtons>
-            <IonTitle>Chi tiết cuộc họp</IonTitle>
+            <IonTitle>{t('meetingDetail.title')}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="meeting-detail-content">
@@ -339,17 +372,17 @@ const MeetingDetailPage: React.FC = () => {
             <IonButtons slot="start">
               <IonBackButton defaultHref="/home" />
             </IonButtons>
-            <IonTitle>Chi tiết cuộc họp</IonTitle>
+            <IonTitle>{t('meetingDetail.title')}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className="meeting-detail-content">
           <div style={{ textAlign: 'center', padding: '40px' }}>
             <IonText color="medium">
-              <h2>Không tìm thấy cuộc họp</h2>
-              <p>{error || 'Cuộc họp bạn đang tìm không tồn tại hoặc đã bị xóa.'}</p>
+              <h2>{t('meetingDetail.notFound')}</h2>
+              <p>{error || t('meetingDetail.notFoundMessage')}</p>
             </IonText>
             <IonButton fill="outline" onClick={() => history.push('/home')}>
-              Quay lại trang chủ
+              {t('meetingDetail.backToHome')}
             </IonButton>
           </div>
         </IonContent>
@@ -375,13 +408,45 @@ const MeetingDetailPage: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonTitle>{meeting.title || 'Chi tiết cuộc họp'}</IonTitle>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editingTitle}
+              onChange={(e) => setEditingTitle(e.target.value)}
+              onBlur={handleSaveTitle}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveTitle();
+                } else if (e.key === 'Escape') {
+                  handleCancelEdit();
+                }
+              }}
+              autoFocus
+              disabled={isUpdatingTitle}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingTop: '0px',
+                paddingBottom: '0px',
+                paddingInline: '20px',
+                margin: 0,
+                fontSize: '20px',
+                fontWeight: '500',
+                textAlign: 'start',
+                lineHeight: '0.0125em',
+              }}
+              placeholder={t('meetingDetail.titlePlaceholder')}
+            />
+          ) : (
+            <IonTitle>{meeting.title || t('meetingDetail.title')}</IonTitle>
+          )}
           <IonButtons slot="end">
-            <IonButton fill="clear" onClick={handleShare}>
-              <Share size={20} />
+            <IonButton fill="clear" color="primary" onClick={handleEdit} disabled={isEditing || isUpdatingTitle}>
+              <SquarePen size={20} />
             </IonButton>
-            <IonButton fill="clear" onClick={handleDelete} disabled={isDeleting}>
-              {isDeleting ? <IonSpinner name="crescent" /> : <Edit3 size={20} />}
+            <IonButton fill="clear" color="primary" onClick={handleDelete} disabled={isDeleting || isEditing}>
+              {isDeleting ? <IonSpinner name="crescent" /> : <Trash2 size={20} />}
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -472,8 +537,8 @@ const MeetingDetailPage: React.FC = () => {
           <div className="meeting-tabs-container">
             <Tabs
               tabs={[
-                { id: 'summary', label: 'Summary' },
-                { id: 'transcription', label: 'Transcription' }
+                { id: 'summary', label: t('meetingDetail.summary') },
+                { id: 'transcription', label: t('meetingDetail.transcription') }
               ]}
               value={selectedTab}
               onChange={(tabId) => setSelectedTab(tabId as 'summary' | 'transcription')}

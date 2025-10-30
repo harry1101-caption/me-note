@@ -64,13 +64,13 @@
   position: relative;
   height: 4px;
   background: #e0e0e0;
-  border-radius: 2px;
+  border-radius: 100px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: #333;
+  background: var(--ion-color-gray-800);
   border-radius: 2px;
   transition: width 0.1s ease;
 }
@@ -81,7 +81,7 @@
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background: #333;
+  background: var(--ion-color-gray-800);
   border-radius: 50%;
   border: 2px solid white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -141,14 +141,14 @@
 
 .control-btn.rewind,
 .control-btn.fast-forward {
-  color: #333;
+  color: var(--ion-color-gray-800)33;
   position: relative;
 }
 
 .control-btn.play-pause {
   width: 40px;
   height: 40px;
-  background: #333;
+  background: var(--ion-color-gray-800);
   color: white;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -156,7 +156,7 @@
 
 
 .control-btn.play-pause.playing {
-  background: #333;
+  background: var(--ion-color-gray-800);
 }
 
 .control-btn:disabled {
@@ -482,3 +482,4 @@
     color: var(--ion-color-light);
   }
 }
+

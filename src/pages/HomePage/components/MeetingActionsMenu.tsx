@@ -2,6 +2,7 @@ import React from 'react';
 import { IonButton } from '@ionic/react';
 import { MoreHorizontal, Share, Edit, Trash2 } from 'lucide-react';
 import { Menu, MenuItem } from '@szhsin/react-menu';
+import { useTranslation } from 'react-i18next';
 import '@szhsin/react-menu/dist/index.css';
 
 interface MeetingActionsMenuProps {
@@ -17,6 +18,8 @@ const MeetingActionsMenu: React.FC<MeetingActionsMenuProps> = ({
   onRename,
   onDelete,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       menuButton={
@@ -36,19 +39,19 @@ const MeetingActionsMenu: React.FC<MeetingActionsMenuProps> = ({
       <MenuItem onClick={() => onShare(meetingId)}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Share size={18} />
-          <span>Share</span>
+          <span>{t('actions.share')}</span>
         </div>
       </MenuItem>
       <MenuItem onClick={() => onRename(meetingId)}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Edit size={18} />
-          <span>Rename</span>
+          <span>{t('actions.rename')}</span>
         </div>
       </MenuItem>
       <MenuItem onClick={() => onDelete(meetingId)} data-danger="true">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Trash2 size={18} />
-          <span>Delete</span>
+          <span>{t('actions.delete')}</span>
         </div>
       </MenuItem>
     </Menu>

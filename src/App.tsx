@@ -8,9 +8,9 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import OnboardingPage from './pages/OnboardingPage';
 import HomePage from './pages/HomePage';
-import RecordingDetailPage from './pages/RecordingDetailPage';
 import MeetingDetailPage from './pages/MeetingDetailPage';
 import 'animate.css';
+import './i18n/config';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -54,7 +54,6 @@ const App: React.FC = () => {
         <IonRouterOutlet>
           {React.createElement(Route as any, { exact: true, path: "/onboarding", component: OnboardingPage })}
           {React.createElement(Route as any, { exact: true, path: "/home", component: HomePage })}
-          {React.createElement(Route as any, { exact: true, path: "/recording/:id", component: RecordingDetailPage })}
           {React.createElement(Route as any, { exact: true, path: "/meeting/:id", component: MeetingDetailPage })}
           {React.createElement(Route as any, { exact: true, path: "/" }, 
             React.createElement(Redirect as any, { to: isOnboardingCompleted ? "/home" : "/onboarding" })

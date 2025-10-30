@@ -67,6 +67,8 @@ interface UseNotesReturn {
   fetchNoteById: (id: string) => Promise<Note | null>;
   deleteNote: (id: string, title: string, summarizedContent: string) => Promise<void>;
   addNote: (note: Note) => void;
+  updateNote: (id: string, updates: Partial<Note>) => void;
+  updateNoteTitle: (id: string, title: string) => Promise<void>;
   createNote: (noteData: Omit<Note, '_id' | 'createdBy' | 'updatedBy' | 'createdAt' | 'updatedAt' | 'isDeleted'>) => Promise<Note>;
 }
 
@@ -194,6 +196,53 @@ export const useNotes = (): UseNotesReturn => {
     });
   }, []);
 
+  const updateNote = useCallback((id: string, updates: Partial<Note>) => {
+    // Update note in the local state
+    setData((prevData) => {
+      if (Array.isArray(prevData)) {
+        return prevData.map(note => 
+          note._id === id 
+            ? { ...note, ...updates }
+            : note
+        );
+      }
+      return prevData;
+    });
+  }, []);
+
+  const updateNoteTitle = useCallback(async (id: string, title: string): Promise<void> => {
+    try {
+      const token = getAnonymousToken();
+      
+      // Find the note to get its current data
+      const currentNote = data?.find(note => note._id === id);
+      if (!currentNote) {
+        throw new Error('Note not found');
+      }
+      
+      // Make PUT request to update the note
+      const response = await axios.put(`${API_BASE_URL}/webhook/note?id=${id}`, {
+        title: title.trim()
+        // summarizedContent: currentNote.summarizedContent || currentNote.content || ''
+      }, {
+        headers: {
+          'anonymous-token': token,
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.status === 200) {
+        // Update local state optimistically
+        updateNote(id, { title: title.trim() });
+      } else {
+        throw new Error('Failed to update note title');
+      }
+    } catch (err) {
+      console.error('Error updating note title:', err);
+      throw err;
+    }
+  }, [data, updateNote]);
+
   const createNote = useCallback(async (noteData: Omit<Note, '_id' | 'createdBy' | 'updatedBy' | 'createdAt' | 'updatedAt' | 'isDeleted'>): Promise<Note> => {
     try {
       const token = getAnonymousToken();
@@ -226,6 +275,8 @@ export const useNotes = (): UseNotesReturn => {
     fetchNoteById,
     deleteNote,
     addNote,
+    updateNote,
+    updateNoteTitle,
     createNote,
   };
 };
